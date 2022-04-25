@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace WebAddressbookTests.tests
+namespace WebAddressbookTests
 {
     [TestFixture]
 
@@ -18,7 +18,7 @@ namespace WebAddressbookTests.tests
             GroupData newData = new GroupData("zzz");
             newData.Header = "ttt";
             newData.Footer = "qqq";
-            app.Groups.Modify(1, newData);       
+            app.Groups.ModifyGroup(1, newData);       
         }
     }
 }
