@@ -1,49 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using NUnit.Framework;
+using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
-    public class TestBaseContacts
+    public class ContactHelper : HelperBase
     {
-        protected IWebDriver driver;
-        protected string baseURL;
-
-        [SetUp]
-        public void SetupTest()
+        public ContactHelper(ApplicationManager manager) : base(manager)
         {
-            driver = new ChromeDriver();
-            baseURL = "http://localhost/addressbook";
+            
         }
 
-        [TearDown]
-        public void TeardownTest()
+        public ContactHelper CreateContact(ContactData contact)
         {
-            try
-            {
-                driver.Quit();
-            }
-            catch (Exception)
-            {
-                // Ignore errors if unable to close the browser
-            }
+            manager.Navigator.GoToAddContactPage();            
+            FillContactForm(contact);
+            SubmitContactCreation();
+            ReturnToContactPage();        
+            return this;
         }
-        protected void ReturnToHomePage()
+        public ContactHelper ReturnToContactPage()
         {
             driver.FindElement(By.LinkText("home")).Click();
+            return this;
         }
 
-        protected void SubmitContactCreation()
+        public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+            return this;
         }
 
-        protected void FillContactForm(ContactData contact)
+        public ContactHelper FillContactForm(ContactData contact)
         {
             driver.FindElement(By.Name("firstname")).Click();
             driver.FindElement(By.Name("firstname")).Clear();
@@ -51,13 +44,10 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("lastname")).Click();
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
+            return this;
         }
 
-        protected void CreateNewContact()
-        {
-            driver.FindElement(By.LinkText("add new")).Click();
-        }
-        protected void Login(AccountData account)
+        public ContactHelper Login(AccountData account)
         {
             driver.FindElement(By.Name("user")).Click();
             driver.FindElement(By.Name("user")).Clear();
@@ -66,10 +56,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("pass")).Clear();
             driver.FindElement(By.Name("pass")).SendKeys(account.Password);
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
-        }
-        protected void GoToHomePage()
-        {
-            driver.Navigate().GoToUrl(baseURL);
+            return this;
         }
     }
 }
