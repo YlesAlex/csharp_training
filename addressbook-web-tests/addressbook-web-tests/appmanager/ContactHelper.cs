@@ -31,7 +31,7 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToHomeContactPage();
             SelectContact(p);
-            InitContactModification();
+            InitContactModification(p);
             FillContactForm(newData);
             UpdateContact();
             return this;
@@ -79,15 +79,15 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
             return this;
         }
-        public ContactHelper SelectContact(int contactIndex)
+        public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("//input[@type='checkbox'][1]")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td/input")).Click();
             return this;
         }
 
-        public ContactHelper InitContactModification()
+        public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("//img[@src='icons/pencil.png'][1]")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td[8]/a/img")).Click();
             driver.FindElement(By.XPath("//body")).Click();
             return this;
         }
