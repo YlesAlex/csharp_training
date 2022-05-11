@@ -30,7 +30,6 @@ namespace WebAddressbookTests
         public ContactHelper ModifyContact(int p, ContactData newData)
         {
             manager.Navigator.GoToHomeContactPage();
-            SelectContact(p);
             InitContactModification(p);
             FillContactForm(newData);
             UpdateContact();
@@ -45,6 +44,7 @@ namespace WebAddressbookTests
 
             return this;
         }
+
         public ContactHelper ReturnToContactPage()
         {
             driver.FindElement(By.LinkText("home")).Click();
@@ -59,23 +59,15 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("lastname"), contact.Lastname);
             return this;
         }
 
         public ContactHelper Login(AccountData account)
         {
-            driver.FindElement(By.Name("user")).Click();
-            driver.FindElement(By.Name("user")).Clear();
-            driver.FindElement(By.Name("user")).SendKeys(account.Username);
-            driver.FindElement(By.Name("pass")).Click();
-            driver.FindElement(By.Name("pass")).Clear();
-            driver.FindElement(By.Name("pass")).SendKeys(account.Password);
+            Type(By.Name("user"), account.Username);
+            Type(By.Name("pass"), account.Password);
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
             return this;
         }
@@ -108,19 +100,7 @@ namespace WebAddressbookTests
             Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             return this;
         }
-        public bool IsElementPresent(By by)
-        {
-            try
-            {
-                driver.FindElement(by);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
-
+        
         public bool IsAlertPresent()
         {
             try
