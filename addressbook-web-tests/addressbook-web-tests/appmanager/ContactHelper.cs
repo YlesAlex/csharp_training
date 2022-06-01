@@ -30,7 +30,6 @@ namespace WebAddressbookTests
         public ContactHelper ModifyContact(int p, ContactData newData)
         {
             manager.Navigator.GoToHomeContactPage();
-            SelectContact(p);
             InitContactModification();
             FillContactForm(newData);
             UpdateContact();
@@ -59,24 +58,8 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
-            return this;
-        }
-
-        public ContactHelper Login(AccountData account)
-        {
-            driver.FindElement(By.Name("user")).Click();
-            driver.FindElement(By.Name("user")).Clear();
-            driver.FindElement(By.Name("user")).SendKeys(account.Username);
-            driver.FindElement(By.Name("pass")).Click();
-            driver.FindElement(By.Name("pass")).Clear();
-            driver.FindElement(By.Name("pass")).SendKeys(account.Password);
-            driver.FindElement(By.XPath("//input[@value='Login']")).Click();
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("lastname"), contact.Lastname);
             return this;
         }
         public ContactHelper SelectContact(int contactIndex)
@@ -107,18 +90,6 @@ namespace WebAddressbookTests
         {
             Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             return this;
-        }
-        public bool IsElementPresent(By by)
-        {
-            try
-            {
-                driver.FindElement(by);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
         }
 
         public bool IsAlertPresent()
@@ -154,6 +125,10 @@ namespace WebAddressbookTests
             {
                 acceptNextAlert = true;
             }
+        }
+        public bool IsContactCreate()
+        {
+            return IsElementPresent(By.Name("entry"));
         }
     }
 }
