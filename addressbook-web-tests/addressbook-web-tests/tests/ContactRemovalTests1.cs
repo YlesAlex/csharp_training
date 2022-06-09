@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Collections.Generic;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -22,7 +23,18 @@ namespace WebAddressbookTests
                 ContactData contact = new ContactData("Alex", "Xela");
                 app.Contacts.CreateContact(contact);
             }
-                app.Contacts.RemoveContact(2);
+
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+
+            ContactData oldData = oldContacts[0];
+
+            app.Contacts.RemoveContact(0);
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+
+            ContactData toBeRemoved = oldContacts[0];
+            oldContacts.RemoveAt(0);
+            Assert.AreEqual(oldContacts, newContacts);
         }               
     }
 }

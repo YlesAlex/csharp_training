@@ -40,10 +40,6 @@ namespace WebAddressbookTests
         }
         public void GoToHomeContactPage()
         {
-            if (driver.Url == baseURL + "/group.php" && IsElementPresent(By.Name("new")))
-            {
-                return;
-            }
             driver.FindElement(By.LinkText("home")).Click();
         }        
     }
