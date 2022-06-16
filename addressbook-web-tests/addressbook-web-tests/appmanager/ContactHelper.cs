@@ -44,6 +44,7 @@ namespace WebAddressbookTests
 
             return this;
         }
+        
         public ContactHelper ReturnToContactPage()
         {
             driver.FindElement(By.LinkText("home")).Click();
@@ -149,11 +150,20 @@ namespace WebAddressbookTests
                     IList<IWebElement> cells = element.FindElements(By.TagName("td"));
                     string firstname = cells[2].Text;
                     string lastname = cells[1].Text;
-                    contactCache.Add(new ContactData(firstname, lastname));
+                    contactCache.Add(new ContactData(firstname, lastname)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    });
 
                 }
             }
             return new List<ContactData>(contactCache);
+        }
+
+        public int GetContactCount()
+        {
+            manager.Navigator.GoToHomeContactPage();
+            return driver.FindElements(By.Name("entry")).Count;
         }
     }
 }
