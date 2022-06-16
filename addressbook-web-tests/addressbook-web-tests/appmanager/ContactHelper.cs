@@ -221,7 +221,18 @@ namespace WebAddressbookTests
             string text = driver.FindElement(By.TagName("label")).Text;
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
-        }       
+        }
+        public ContactData GetContactInformationFromDetails(int index)
+        {
+
+            manager.Navigator.GoToHomePage();
+            driver.FindElement(By.XPath("//img[@alt='Details']")).Click();
+            string allContactsInfo = driver.FindElement(By.Id("content")).Text;
+            return new ContactData("", "")
+            {
+                AllContactsInfo = allContactsInfo
+            };
+        }
     }
 }
 

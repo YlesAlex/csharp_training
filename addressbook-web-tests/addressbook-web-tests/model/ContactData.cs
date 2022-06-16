@@ -12,6 +12,7 @@ namespace WebAddressbookTests
 
         private string allPhones;
         private string allEmails;
+        private string allContactsInfo;
 
 
         public ContactData(string firstname, string lastname)
@@ -131,6 +132,95 @@ namespace WebAddressbookTests
                 return "";
             }
             return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+        }
+
+        private string CleanUpAllData(string allData)
+        {
+            if (allData == null || allData == "")
+            {
+                return "";
+            }
+            return allData + "\r\n";
+        }
+
+        public string AllContactsInfo
+        {
+            get
+            {
+                if (allContactsInfo != null)
+                {
+                    return allContactsInfo;
+                }
+                else
+                {
+                    string allData = (CleanUpAllData(GetContacts(Firstname, Lastname, Address))
+                        + CleanUpAllData(GetPhones(HomePhone, MobilePhone, WorkPhone))
+                        + CleanUpAllData(GetEmails(Email, Email2, Email3))).Trim();
+
+                    return allData;
+                }
+            }
+            set
+            {
+                allContactsInfo = value;
+            }
+        }
+
+        private string GetContacts(string firstname, string lastname, string address)
+        {
+            return CleanUpAllData(GetFullName(firstname, lastname))
+                + CleanUpAllData(address);
+        }
+
+        private string GetFullName(string firstname, string lastname)
+        {
+            string bufer = "";
+            if (firstname != null && firstname != "")
+            {
+                bufer = Firstname + " ";
+            }
+            if (lastname != null && lastname != "")
+            {
+                bufer = bufer + Lastname + " ";
+            }
+            return bufer.Trim();
+        }
+
+        private string GetPhones(string homePhone, string mobilePhone, string workPhone)
+        {
+            string bufer = "";
+            if (homePhone != null && homePhone != "")
+            {
+                bufer = bufer + "H: " + HomePhone + "\r\n";
+            }
+            if (mobilePhone != null && mobilePhone != "")
+            {
+                bufer = bufer + "M: " + MobilePhone + "\r\n";
+            }
+            if (workPhone != null && workPhone != "")
+            {
+                bufer = bufer + "W: " + WorkPhone + "\r\n";
+            }
+            return bufer;
+        }
+
+        private string GetEmails(string email, string email2, string email3)
+        {
+            string bufer = "";
+
+            if (email != null && email != "")
+            {
+                bufer = bufer + email + "\r\n";
+            }
+            if (email2 != null && email2 != "")
+            {
+                bufer = bufer + email2 + "\r\n";
+            }
+            if (email3 != null && email3 != "")
+            {
+                bufer = bufer + email3 + "\r\n";
+            }
+            return bufer;
         }
     }
 }
